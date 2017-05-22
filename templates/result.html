@@ -1,0 +1,58 @@
+{% extends "base.html"%}
+{% block content%}
+<h1> {{search}} </h1>
+{% for item in range(0,21) %}
+{% if '{}'.format(item) in all_item %}
+{%if all_item.get('{}'.format(item))['img'] != ''%}
+
+<div class="card mb-3">
+    <div class="card-block">
+        <a href="{{all_item.get('{}'.format(item))['link']}}"><h4 class="card-title">
+            {{all_item.get('{}'.format(item))['title']}}</h4></a>
+        <a href="{{all_item.get('{}'.format(item))['link']}}"><img class="card-img-top"
+                                                                   src="{{all_item.get('{}'.format(item))['img']}}"
+                                                                   alt="Card image cap" width="196" height="110"></a>
+        <p class="card-text">
+            <small class="text-muted">{{all_item.get('{}'.format(item))['time']}}</small>
+        </p>
+
+        <form action="/download" target="_blank">
+            <button type="submit" class="btn btn-warning" name="value"
+                    value="mp3&{{all_item.get('{}'.format(item))['link']}}">MP3
+            </button>
+            <button type="submit" class="btn btn-danger" name="value"
+                    value="mp4&{{all_item.get('{}'.format(item))['link']}}">MP4
+            </button>
+        </form>
+
+
+    </div>
+</div>
+{%endif%}
+{%endif%}
+{%endfor%}
+<p class="re">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            {% for page in range(0,8) %}
+            {% if '{}'.format(page) in all_page %}
+            <li class="page-item"><a class="page-link" href="{{all_page.get('{}'.format(page))}}&current_page={{page}}">{{page}}</a></li>
+            {%endif%}
+            {%endfor%}
+            <li class="page-item">
+                <a class="page-link" href="{{all_page.get('2')}}&current_page=2" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</p>
+{%endblock%}

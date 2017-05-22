@@ -15,8 +15,13 @@ def find_search_content(search):
     soup = BeautifulSoup(content, "html.parser")
     return soup
 
+def find_page_content(search):
+    request = requests.get("https://www.youtube.com/results?{}".format(search))
+    content = request.content
+    soup = BeautifulSoup(content, "html.parser")
+    return soup
+
 def find_video(soup,all_item,i=1):
-    all_item = {}
     for element in soup.find_all('a', {"rel": "spf-prefetch"}):
         video_title = element.get('title')
         video_link = element.get('href')
@@ -29,9 +34,9 @@ def find_video(soup,all_item,i=1):
     return all_item
 
 def video_time(soup, all_item, i=1):
-    for time in soup.find_all('span', {"class": "video-time"}):
+    for time in soup.find_all('span', {"class":"video-time"}):
         all_item.get('{}'.format(i))['time'] = time.text
-        i += 1
+        i = i + 1
     return all_item
 
 def every_video(soup):
@@ -58,6 +63,6 @@ def download_mp3(url):
         ydl.download([url])
 
 def download_mp4(url):
-    ydl_opts = {'outtmpl': '/video/%(title)s.%(ext)s'}
+    ydl_opts = {'format': 'best', 'outtmpl': '/video/%(title)s.%(ext)s'}
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
